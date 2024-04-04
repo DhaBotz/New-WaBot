@@ -1208,16 +1208,17 @@ export async function participantsUpdate({
             if (chat.welcome) {
                 const groupMetadata = await this.groupMetadata(id) || (this.chats[id] || {}).metadata;
                 for (let user of participants) {
-                    let pp = 'https://telegra.ph/file/24fa902ead26340f3df2c.png'
-                    let ppgc = 'https://telegra.ph/file/24fa902ead26340f3df2c.png'
+                    let pp = 'https://telegra.ph/file/24fa902ead26340f3df2c.png';
+                    let ppgc = 'https://telegra.ph/file/24fa902ead26340f3df2c.png';
                     try {
-                        pp = await this.profilePictureUrl(user, 'image')
-                        ppgc = await this.profilePictureUrl(id, 'image')
+                        pp = await this.profilePictureUrl(user, 'image');
+                        ppgc = await this.profilePictureUrl(id, 'image');
                     } catch (e) {
                     } finally {
                     const isAddAction = action === "add";
                     const welcomeText = isAddAction ? (chat.sWelcome || this.welcome || conn.welcome || `${emoji.welcome} Selamat datang, @user!`).replace("@subject", await this.getName(id)).replace("@desc", groupMetadata.desc?.toString() || "tidak diketahui") :
-                        (chat.sBye || this.bye || conn.bye || `${emoji.bye} Sampai jumpa, @user!`)
+                        (chat.sBye || this.bye || conn.bye || `${emoji.bye} Sampai jumpa, @user!`);
+                    const lapor = `\n\n${emoji.mail} *Pesan:* Jika menemukan bug, error, atau kesulitan dalam penggunaan, silakan laporkan/tanyakan kepada ${emoji.owner}`;
                     let welran = await new knights.Welcome() 
                     .setUsername(this.getName(user))
                     .setGuildName(groupMetadata.subject)
@@ -1235,26 +1236,27 @@ export async function participantsUpdate({
                      .setAvatar(pp)
                      .setBackground("https://telegra.ph/file/4b90043328ec4825c0e71.jpg")
                      .toAttachment()
-                    const spaces = "                    "
-                    const lapor = `\n\n${emoji.mail} *Pesan:* Jika menemukan bug, error, atau kesulitan dalam penggunaan, silakan laporkan/tanyakan kepada ${emoji.owner}`;
-                    //await this.sendFile(id, action === "add" ? welran : byeran, pp, 'pp.jpg', welcomeText.replace("@user", "@" + participants[0].split("@")[0]) + lapor, fakes, { mentions: [participants[0]] }) 
-                    await this.sendMessage(id, {text: welcomeText.replace("@user", "@" + participants[0].split("@")[0]) + lapor,
+
+                        const thumbnailData = await this.getFile(pp);
+                        this.sendMessage(id, {
+                            text: welcomeText.replace("@user", "@" + participants[0].split("@")[0]) + lapor,
+                            thumbnail: thumbnailData.data,
                             contextInfo: {
                                 mentionedJid: [participants[0]],
                                 externalAdReply: {
-                                    title: htki + ( isAddAction ? " Member Join " : " Member Out ") + htka,
+                                    title: htki + (isAddAction ? " Member Join " : " Member Out ") + htka,
                                     body: '',
                                     sourceUrl: "https://chat.whatsapp.com/JFzipOMAz155jOldBdqUZy",
                                     mediaType: 1,
+                                    previewType: 0,
                                     renderLargerThumbnail: true,
-                                    thumbnail: await(await fetch(pp)).buffer(),
-                                    thumbnailUrl: await( await this.getFile(pp)).data,
+                                    thumbnailUrl: pp
                                 },
                             },
-                        },{
-                      quoted: fakes,
-                  });
-                 }
+                        }, {
+                            quoted: fakes,
+                        });
+                    }
                 }
             }
             break
