@@ -88,7 +88,8 @@ global.yt = "bit.ly/Papah-Chan"
 global.str = '-------------------------------'
 global.l = '「'
 global.r = '」'
-global.error = 'Fitur Ini Sedang Error'
+global.error = 'Fitur Ini Sedang Error\nSegera Hubungi Owner Agar Diperbaiki'
+global.eror = 'Fitur Ini Sedang Error\nSegera Hubungi Owner Agar Diperbaiki'
 global.botdate = `${htjava} Date :  ${moment.tz("Asia/Jakarta").format("DD/MM/YY")}`
 global.bottime = `𝗧 𝗜 𝗠 𝗘 : ${moment.tz("Asia/Jakarta").format("HH:mm:ss")}`
 //===========> fake <==============//
